@@ -41,6 +41,7 @@ export const Slider: React.FC<Props> = ({
       id={id}
       ref={inputRef}
       defaultValue={defaultValue || value}
+      value={value}
       min={min}
       max={max}
       step={step}
