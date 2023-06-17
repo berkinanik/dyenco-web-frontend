@@ -19,7 +19,7 @@ export const DeviceStatus: React.FC = () => {
   const {
     status: {
       deviceConnected,
-      running,
+      operationMode,
       horizontalAngle,
       verticalAngle,
       lowerMotorVoltage,
@@ -32,7 +32,7 @@ export const DeviceStatus: React.FC = () => {
   const queryClient = useQueryClient();
 
   const { failureCount } = useGetCurrentSettings({
-    refetchInterval: 1000,
+    refetchInterval: 1000, // TODO update interval
     enabled: deviceConnected,
     retry: 2,
     onError: (error) => {
@@ -79,8 +79,8 @@ export const DeviceStatus: React.FC = () => {
       <Divider />
 
       <Flex alignItems="center" my={2}>
-        <Text fontWeight="bold">Device Status:</Text>
-        <Text ml={2}>{running ? 'Running' : 'Stopped'}</Text>
+        <Text fontWeight="bold">Operation Mode:</Text>
+        <Text ml={2}>{operationMode.toLocaleUpperCase()}</Text>
       </Flex>
 
       <Divider />

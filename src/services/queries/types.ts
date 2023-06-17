@@ -3,6 +3,7 @@ export enum Query {
 }
 
 export interface CurrentSettingsResponse {
+  operationMode: string;
   stepperMotorRate: number;
   horizontalAngle: number;
   verticalAngle: number;
