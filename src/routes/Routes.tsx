@@ -1,5 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 
+import { AdvancedControlPage } from '@/pages/advanced-control/AdvancedControlPage';
 import { HomePage } from '@/pages/home/HomePage';
 import { NotFoundPage } from '@/pages/not-found/NotFoundPage';
 
@@ -15,6 +16,8 @@ export const Routes: React.FC = () => {
       <Route path="/test">
         <div>Test</div>
       </Route>
+
+      <Route path="/advanced-control">{withLayout(AdvancedControlPage)}</Route>
 
       <Route path="*">
         <NotFoundPage />

@@ -16,7 +16,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
       marginX="auto"
       width="100%"
     >
-      <Grid templateColumns="3fr 1fr" gap={4} flex={1}>
+      <Grid templateColumns="2fr 1fr" gap={4} flex={1}>
         <GridItem>{children}</GridItem>
 
         <GridItem>
