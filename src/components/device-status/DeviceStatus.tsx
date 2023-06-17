@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Divider,
   Flex,
   Icon,
@@ -12,6 +13,7 @@ import { useQueryClient } from 'react-query';
 
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
 import { useBorderColor } from '@/hooks/useBorderColor';
+import { useStopGameMutation } from '@/services/mutations/device/useStopMutation';
 import { useGetCurrentSettings } from '@/services/queries/device/useGetCurrentSettings';
 import { Query } from '@/services/queries/types';
 
@@ -45,6 +47,17 @@ export const DeviceStatus: React.FC = () => {
       });
     },
     onSuccess: (result) => changeStatus({ deviceConnected: true, ...result }),
+  });
+
+  const { mutate, isLoading } = useStopGameMutation({
+    onSuccess: () => {
+      toast({
+        title: 'Game stopped',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    },
   });
 
   return (
@@ -112,6 +125,19 @@ export const DeviceStatus: React.FC = () => {
       <Flex alignItems="center" mb={2}>
         <Text fontWeight="bold">Lower Motor Voltage:</Text>
         <Text ml={2}>{lowerMotorVoltage} V</Text>
+      </Flex>
+
+      <Divider />
+
+      <Flex placeContent="center" mt={2}>
+        <Button
+          colorScheme="red"
+          onClick={() => mutate()}
+          isLoading={isLoading}
+          isDisabled={!deviceConnected || operationMode === 'idle'}
+        >
+          Stop
+        </Button>
       </Flex>
     </Box>
   );

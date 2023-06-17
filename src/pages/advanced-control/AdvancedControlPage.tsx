@@ -4,17 +4,21 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  HStack,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Slider } from '@/components/forms/slider/Slider';
+import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
 import { useBorderColor } from '@/hooks/useBorderColor';
+import { useStartAdvancedMutation } from '@/services/mutations/device/useStartAdvanced';
 
 const schema = z.object({
-  stepperRate: z.number().min(0.1).max(60),
+  stepperMotorRate: z.number().min(0.1).max(60),
   horizontalAngle: z.number().min(-90).max(90),
   verticalAngle: z.number().min(-90).max(90),
   upperMotorVoltage: z.number().min(0).max(12),
@@ -23,24 +27,46 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+const defaultValues: FormData = {
+  stepperMotorRate: 0.1,
+  horizontalAngle: 0,
+  verticalAngle: 0,
+  upperMotorVoltage: 0,
+  lowerMotorVoltage: 0,
+};
+
 export const AdvancedControlPage = () => {
+  const toast = useToast();
+
   const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<FormData>({
+    status: {
+      deviceConnected,
+      operationMode,
+      stepperMotorRate,
+      horizontalAngle,
+      verticalAngle,
+      upperMotorVoltage,
+      lowerMotorVoltage,
+    },
+  } = useDeviceStatusContext();
+
+  const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      stepperRate: 0.1,
-      horizontalAngle: 0,
-      verticalAngle: 0,
-      upperMotorVoltage: 0,
-      lowerMotorVoltage: 0,
+    defaultValues,
+  });
+
+  const { mutate, isLoading } = useStartAdvancedMutation({
+    onSuccess: () => {
+      toast({
+        title: 'Session started',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
     },
   });
 
-  const onSubmit: SubmitHandler<FormData> = () =>
-    new Promise((resolve) => setTimeout(resolve, 3000));
+  const onSubmit: SubmitHandler<FormData> = (data) => mutate(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -53,15 +79,15 @@ export const AdvancedControlPage = () => {
         borderStyle="solid"
         borderColor={useBorderColor()}
       >
-        <Controller<FormData, 'stepperRate'>
-          name="stepperRate"
+        <Controller<FormData, 'stepperMotorRate'>
+          name="stepperMotorRate"
           control={control}
           render={({ field: { ref, ...field }, fieldState: { error } }) => (
             <FormControl isInvalid={!!error}>
-              <FormLabel htmlFor="stepperRate">Stepper Rate</FormLabel>
+              <FormLabel htmlFor="stepperMotorRate">Stepper Rate</FormLabel>
               <Box p={2}>
                 <Slider
-                  id="stepperRate"
+                  id="stepperMotorRate"
                   {...field}
                   min={0.1}
                   max={60}
@@ -157,9 +183,36 @@ export const AdvancedControlPage = () => {
           )}
         />
 
-        <Button type="submit" isLoading={isSubmitting} colorScheme="teal">
-          Submit
-        </Button>
+        <HStack width="100%" justify="center" spacing={6}>
+          <Button
+            type="button"
+            colorScheme="gray"
+            onClick={() =>
+              reset(
+                deviceConnected
+                  ? {
+                      stepperMotorRate,
+                      horizontalAngle,
+                      verticalAngle,
+                      upperMotorVoltage,
+                      lowerMotorVoltage,
+                    }
+                  : defaultValues,
+              )
+            }
+          >
+            Reset
+          </Button>
+
+          <Button
+            type="submit"
+            isLoading={isLoading}
+            isDisabled={!deviceConnected}
+            colorScheme={operationMode === 'idle' ? 'green' : 'teal'}
+          >
+            {operationMode === 'idle' ? 'Start' : 'Update'}
+          </Button>
+        </HStack>
       </VStack>
     </form>
   );
