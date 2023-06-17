@@ -1,11 +1,11 @@
 import { Box } from '@chakra-ui/react';
 
-export const Navbar = () => {
+export const Navbar: React.FC = () => {
   return (
     <Box flex={1} backgroundColor="blackAlpha.500">
       <Box
         marginX="auto"
-        maxWidth="1200px"
+        maxWidth="80em"
         display="flex"
         flexDirection="row"
         padding={4}
