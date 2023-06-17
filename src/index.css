@@ -60,3 +60,25 @@ h6 {
 #__next {
   isolation: isolate;
 }
+/*
+  9. Remove default button styles
+*/
+button {
+  background: none;
+  border: none;
+  padding: 0;
+}
+/*
+  10. Remove default list styles
+*/
+ul,
+ol {
+  list-style: none;
+}
+/*
+  11. Remove default anchor styles
+*/
+a {
+  color: inherit;
+  text-decoration: none;
+}

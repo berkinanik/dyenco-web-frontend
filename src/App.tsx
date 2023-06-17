@@ -1,9 +1,8 @@
 import { Box } from '@chakra-ui/react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
-import { Layout } from './components/layout/Layout';
 import { Navbar } from './components/navbar/Navbar';
-import { HomePage } from './pages/home/HomePage';
+import { Routes } from './routes/Routes';
 
 export const App: React.FC = () => {
   return (
@@ -11,21 +10,7 @@ export const App: React.FC = () => {
       <HashRouter>
         <Navbar />
 
-        <Layout>
-          <Switch>
-            <Route path="/" exact>
-              <HomePage />
-            </Route>
-
-            <Route path="/test">
-              <Box>Test</Box>
-            </Route>
-
-            <Route path="*">
-              <Box>404</Box>
-            </Route>
-          </Switch>
-        </Layout>
+        <Routes />
       </HashRouter>
     </Box>
   );
