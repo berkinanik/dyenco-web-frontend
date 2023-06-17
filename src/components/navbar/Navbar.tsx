@@ -71,7 +71,6 @@ export const Navbar: React.FC = () => {
                 size={'md'}
                 icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}
                 variant="outline"
-                cursor="pointer"
               />
 
               {/* Avatar */}

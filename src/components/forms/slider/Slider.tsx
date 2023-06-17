@@ -51,12 +51,12 @@ export const Slider: React.FC<Props> = ({
     >
       {min !== undefined && max !== undefined ? (
         <>
-          <SliderMark value={min} mt="1" ml="-2.5" fontSize="sm">
+          <SliderMark value={min} mt="2" ml="-2.5" fontSize="sm">
             {min}
             {unit}
           </SliderMark>
 
-          <SliderMark value={max} mt="1" ml="-2.5" fontSize="sm">
+          <SliderMark value={max} mt="2" ml="-2.5" fontSize="sm">
             {max}
             {unit}
           </SliderMark>

@@ -11,6 +11,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Slider } from '@/components/forms/slider/Slider';
+import { useBorderColor } from '@/hooks/useBorderColor';
 
 const schema = z.object({
   stepperRate: z.number().min(0.1).max(60),
@@ -43,7 +44,15 @@ export const AdvancedControlPage = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <VStack spacing={6} align="start">
+      <VStack
+        spacing={6}
+        align="start"
+        p={4}
+        borderWidth={1}
+        borderRadius="md"
+        borderStyle="solid"
+        borderColor={useBorderColor()}
+      >
         <Controller<FormData, 'stepperRate'>
           name="stepperRate"
           control={control}
@@ -148,7 +157,7 @@ export const AdvancedControlPage = () => {
           )}
         />
 
-        <Button type="submit" cursor="pointer" isLoading={isSubmitting}>
+        <Button type="submit" isLoading={isSubmitting} colorScheme="teal">
           Submit
         </Button>
       </VStack>
