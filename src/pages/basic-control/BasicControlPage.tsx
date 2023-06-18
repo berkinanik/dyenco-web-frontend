@@ -19,18 +19,7 @@ import { RadioGroup } from '@/components/forms/radio-button/RadioGroup';
 import { TennisTable } from '@/components/tennis-table/TennisTable';
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
 import { useStartBasicMutation } from '@/services/mutations/device/useStartBasicMutation';
-
-export enum Spin {
-  Topspin = 'topspin',
-  None = 'none',
-  Backspin = 'backspin',
-}
-
-export enum BallFeedRate {
-  Low = 'low',
-  Medium = 'medium',
-  High = 'high',
-}
+import { BallFeedRate, OperationMode, Spin } from '@/types/settings';
 
 const schema = z.object({
   targetArea: z.number().min(1).max(6),
@@ -170,9 +159,11 @@ export const BasicControlPage: React.FC = () => {
               type="submit"
               isLoading={isLoading}
               isDisabled={!deviceConnected}
-              colorScheme={operationMode === 'idle' ? 'green' : 'teal'}
+              colorScheme={
+                operationMode === OperationMode.IDLE ? 'green' : 'teal'
+              }
             >
-              {operationMode === 'idle' ? 'Start' : 'Update'}
+              {operationMode === OperationMode.IDLE ? 'Start' : 'Update'}
             </Button>
           </FormBox>
         </form>

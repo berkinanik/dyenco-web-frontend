@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+
+import { OperationMode } from '@/types/settings';
 
 export type DeviceStatus = {
   deviceConnected: boolean;
-  operationMode: string;
+  operationMode: OperationMode;
   stepperMotorRate: number;
   horizontalAngle: number;
   verticalAngle: number;
@@ -17,7 +19,7 @@ export type DeviceStatusContextType = {
 
 const initialStatus: DeviceStatus = {
   deviceConnected: false,
-  operationMode: 'idle',
+  operationMode: OperationMode.IDLE,
   stepperMotorRate: 0.1,
   horizontalAngle: -31,
   verticalAngle: 0,

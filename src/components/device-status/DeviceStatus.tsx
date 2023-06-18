@@ -16,6 +16,7 @@ import { useBorderColor } from '@/hooks/useBorderColor';
 import { useStopGameMutation } from '@/services/mutations/device/useStopMutation';
 import { useGetCurrentSettings } from '@/services/queries/device/useGetCurrentSettings';
 import { Query } from '@/services/queries/types';
+import { OperationMode } from '@/types/settings';
 
 export const DeviceStatus: React.FC = () => {
   const {
@@ -96,7 +97,9 @@ export const DeviceStatus: React.FC = () => {
         <Text fontWeight="bold">Operation Mode:</Text>
         <Text
           ml={2}
-          color={operationMode === 'idle' ? 'yellow.500' : 'blue.400'}
+          color={
+            operationMode === OperationMode.IDLE ? 'yellow.500' : 'blue.400'
+          }
         >
           {operationMode.toLocaleUpperCase()}
         </Text>
@@ -140,7 +143,7 @@ export const DeviceStatus: React.FC = () => {
           colorScheme="red"
           onClick={() => mutate()}
           isLoading={isLoading}
-          isDisabled={!deviceConnected || operationMode === 'idle'}
+          isDisabled={!deviceConnected || operationMode === OperationMode.IDLE}
         >
           Stop
         </Button>

@@ -15,6 +15,7 @@ import { FormBox } from '@/components/form-box/FormBox';
 import { Slider } from '@/components/forms/slider/Slider';
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
 import { useStartAdvancedMutation } from '@/services/mutations/device/useStartAdvancedMutation';
+import { OperationMode } from '@/types/settings';
 
 const schema = z.object({
   stepperMotorRate: z.number().min(0.1).max(10),
@@ -199,9 +200,11 @@ export const AdvancedControlPage = () => {
             type="submit"
             isLoading={isLoading}
             isDisabled={!deviceConnected}
-            colorScheme={operationMode === 'idle' ? 'green' : 'teal'}
+            colorScheme={
+              operationMode === OperationMode.IDLE ? 'green' : 'teal'
+            }
           >
-            {operationMode === 'idle' ? 'Start' : 'Update'}
+            {operationMode === OperationMode.IDLE ? 'Start' : 'Update'}
           </Button>
         </HStack>
       </FormBox>
