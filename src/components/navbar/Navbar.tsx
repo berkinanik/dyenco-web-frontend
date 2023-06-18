@@ -17,7 +17,7 @@ import { NavLink } from './NavbarLink';
 
 const Links: { name: string; to: string }[] = [
   {
-    name: 'Home',
+    name: 'Basic',
     to: '/',
   },
   {
