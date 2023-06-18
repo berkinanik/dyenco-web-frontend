@@ -1,7 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 
 import { AdvancedControlPage } from '@/pages/advanced-control/AdvancedControlPage';
-import { BasicPage } from '@/pages/basic/BasicPage';
+import { BasicControlPage } from '@/pages/basic-control/BasicControlPage';
 import { NotFoundPage } from '@/pages/not-found/NotFoundPage';
 
 import { withLayout } from './withLayout';
@@ -10,7 +10,7 @@ export const Routes: React.FC = () => {
   return (
     <Switch>
       <Route path="/" exact>
-        {withLayout(BasicPage)}
+        {withLayout(BasicControlPage)}
       </Route>
 
       <Route path="/test">

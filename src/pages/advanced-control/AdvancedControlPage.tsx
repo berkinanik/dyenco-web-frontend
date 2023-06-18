@@ -15,7 +15,7 @@ import { z } from 'zod';
 import { Slider } from '@/components/forms/slider/Slider';
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
 import { useBorderColor } from '@/hooks/useBorderColor';
-import { useStartAdvancedMutation } from '@/services/mutations/device/useStartAdvanced';
+import { useStartAdvancedMutation } from '@/services/mutations/device/useStartAdvancedMutation';
 
 const schema = z.object({
   stepperMotorRate: z.number().min(0).max(60),

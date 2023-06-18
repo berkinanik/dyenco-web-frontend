@@ -1,6 +1,5 @@
-import { useState } from 'react';
-
 import {
+  Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -11,20 +10,23 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineRedo, AiOutlineRight, AiOutlineUndo } from 'react-icons/ai';
 import { z } from 'zod';
 
 import { RadioGroup } from '@/components/forms/radio-button/RadioGroup';
 import { TennisTable } from '@/components/tennis-table/TennisTable';
+import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
+import { useStartBasicMutation } from '@/services/mutations/device/useStartBasicMutation';
 
-enum Spin {
+export enum Spin {
   Topspin = 'topspin',
   None = 'none',
   Backspin = 'backspin',
 }
 
-enum BallFeedRate {
+export enum BallFeedRate {
   Low = 'low',
   Medium = 'medium',
   High = 'high',
@@ -44,12 +46,21 @@ const defaultValues: FormData = {
   ballFeedRate: BallFeedRate.Medium,
 };
 
-export const BasicPage: React.FC = () => {
-  const [selectedArea, setSelectedArea] = useState(defaultValues.targetArea);
+export const BasicControlPage: React.FC = () => {
+  const {
+    status: { deviceConnected, operationMode },
+  } = useDeviceStatusContext();
 
-  const { handleSubmit, control } = useForm<FormData>({ defaultValues });
+  const { handleSubmit, control, watch, setValue } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues,
+  });
 
-  const onSubmit = () => console.log(selectedArea);
+  const selectedArea = watch('targetArea');
+
+  const { mutate, isLoading } = useStartBasicMutation();
+
+  const onSubmit: SubmitHandler<FormData> = (data) => mutate(data);
 
   return (
     <Grid
@@ -62,7 +73,7 @@ export const BasicPage: React.FC = () => {
       <GridItem>
         <TennisTable
           selectedArea={selectedArea}
-          setSelectedArea={setSelectedArea}
+          setSelectedArea={(area) => setValue('targetArea', area)}
         />
       </GridItem>
 
@@ -154,6 +165,15 @@ export const BasicPage: React.FC = () => {
                 );
               }}
             />
+
+            <Button
+              type="submit"
+              isLoading={isLoading}
+              isDisabled={!deviceConnected}
+              colorScheme={operationMode === 'idle' ? 'green' : 'teal'}
+            >
+              {operationMode === 'idle' ? 'Start' : 'Update'}
+            </Button>
           </VStack>
         </form>
       </GridItem>
