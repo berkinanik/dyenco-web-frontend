@@ -8,13 +8,13 @@ import {
   HStack,
   Icon,
   Text,
-  VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { AiOutlineRedo, AiOutlineRight, AiOutlineUndo } from 'react-icons/ai';
 import { z } from 'zod';
 
+import { FormBox } from '@/components/form-box/FormBox';
 import { RadioGroup } from '@/components/forms/radio-button/RadioGroup';
 import { TennisTable } from '@/components/tennis-table/TennisTable';
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
@@ -79,7 +79,7 @@ export const BasicControlPage: React.FC = () => {
 
       <GridItem>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <VStack spacing={4}>
+          <FormBox>
             <Controller<FormData, 'spin'>
               name="spin"
               control={control}
@@ -174,7 +174,7 @@ export const BasicControlPage: React.FC = () => {
             >
               {operationMode === 'idle' ? 'Start' : 'Update'}
             </Button>
-          </VStack>
+          </FormBox>
         </form>
       </GridItem>
     </Grid>

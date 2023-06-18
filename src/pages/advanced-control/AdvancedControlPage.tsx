@@ -5,16 +5,15 @@ import {
   FormErrorMessage,
   FormLabel,
   HStack,
-  VStack,
   useToast,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { FormBox } from '@/components/form-box/FormBox';
 import { Slider } from '@/components/forms/slider/Slider';
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
-import { useBorderColor } from '@/hooks/useBorderColor';
 import { useStartAdvancedMutation } from '@/services/mutations/device/useStartAdvancedMutation';
 
 const schema = z.object({
@@ -70,15 +69,7 @@ export const AdvancedControlPage = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <VStack
-        spacing={6}
-        align="start"
-        p={4}
-        borderWidth={1}
-        borderRadius="md"
-        borderStyle="solid"
-        borderColor={useBorderColor()}
-      >
+      <FormBox>
         <Controller<FormData, 'stepperMotorRate'>
           name="stepperMotorRate"
           control={control}
@@ -213,7 +204,7 @@ export const AdvancedControlPage = () => {
             {operationMode === 'idle' ? 'Start' : 'Update'}
           </Button>
         </HStack>
-      </VStack>
+      </FormBox>
     </form>
   );
 };
