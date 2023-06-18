@@ -94,7 +94,12 @@ export const DeviceStatus: React.FC = () => {
 
       <Flex alignItems="center" my={2}>
         <Text fontWeight="bold">Operation Mode:</Text>
-        <Text ml={2}>{operationMode.toLocaleUpperCase()}</Text>
+        <Text
+          ml={2}
+          color={operationMode === 'idle' ? 'yellow.500' : 'blue.400'}
+        >
+          {operationMode.toLocaleUpperCase()}
+        </Text>
       </Flex>
 
       <Divider />
