@@ -17,9 +17,9 @@ import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
 import { useStartAdvancedMutation } from '@/services/mutations/device/useStartAdvancedMutation';
 
 const schema = z.object({
-  stepperMotorRate: z.number().min(0).max(60),
-  horizontalAngle: z.number().min(-90).max(90),
-  verticalAngle: z.number().min(-90).max(90),
+  stepperMotorRate: z.number().min(0.1).max(10),
+  horizontalAngle: z.number().min(-60).max(5),
+  verticalAngle: z.number().min(-55).max(10),
   upperMotorVoltage: z.number().min(0).max(12),
   lowerMotorVoltage: z.number().min(0).max(12),
 });
@@ -27,8 +27,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const defaultValues: FormData = {
-  stepperMotorRate: 0,
-  horizontalAngle: 0,
+  stepperMotorRate: 0.1,
+  horizontalAngle: -31,
   verticalAngle: 0,
   upperMotorVoltage: 0,
   lowerMotorVoltage: 0,
@@ -80,9 +80,9 @@ export const AdvancedControlPage = () => {
                 <Slider
                   id="stepperMotorRate"
                   {...field}
-                  min={0}
-                  max={60}
-                  step={0.5}
+                  min={0.1}
+                  max={10}
+                  step={0.1}
                 />
               </Box>
               <FormErrorMessage>{error && error?.message}</FormErrorMessage>
@@ -100,9 +100,9 @@ export const AdvancedControlPage = () => {
                 <Slider
                   id="horizontalAngle"
                   {...field}
-                  min={-90}
-                  max={90}
-                  step={5}
+                  min={-60}
+                  max={5}
+                  step={1}
                 />
               </Box>
               <FormErrorMessage>{error && error?.message}</FormErrorMessage>
@@ -120,9 +120,9 @@ export const AdvancedControlPage = () => {
                 <Slider
                   id="verticalAngle"
                   {...field}
-                  min={-90}
-                  max={90}
-                  step={5}
+                  min={-55}
+                  max={10}
+                  step={1}
                 />
               </Box>
               <FormErrorMessage>{error && error?.message}</FormErrorMessage>
