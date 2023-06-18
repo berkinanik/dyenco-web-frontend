@@ -11,15 +11,30 @@ export const Layout: React.FC<Props> = ({ children }) => {
     <Box
       display="flex"
       flexDirection="row"
-      maxWidth="80em"
+      maxWidth="90em"
       padding={4}
       marginX="auto"
       width="100%"
     >
-      <Grid templateColumns="2fr 1fr" gap={4} flex={1}>
+      <Grid
+        templateColumns={{
+          base: '1fr',
+          lg: '2fr 1fr',
+        }}
+        gap={4}
+        flex={1}
+      >
         <GridItem>{children}</GridItem>
 
-        <GridItem>
+        <GridItem
+          gridRowStart={{
+            base: 1,
+          }}
+          gridColumnStart={{
+            base: 1,
+            lg: 2,
+          }}
+        >
           <DeviceStatus />
         </GridItem>
       </Grid>

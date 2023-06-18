@@ -34,7 +34,7 @@ export const DeviceStatus: React.FC = () => {
   const queryClient = useQueryClient();
 
   const { failureCount } = useGetCurrentSettings({
-    refetchInterval: 1000, // TODO update interval
+    refetchInterval: 1000,
     enabled: deviceConnected,
     retry: 2,
     onError: (error) => {

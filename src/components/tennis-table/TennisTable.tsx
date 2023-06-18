@@ -1,14 +1,18 @@
-import { useState } from 'react';
-
 import { AspectRatio, Box, Grid, GridItem } from '@chakra-ui/react';
 
 import { TargetArea } from './TargetArea';
 
-export const TennisTable: React.FC = () => {
-  const [selectedArea, setSelectedArea] = useState<number>(2);
+type Props = {
+  selectedArea: number;
+  setSelectedArea: (area: number) => void;
+};
 
+export const TennisTable: React.FC<Props> = ({
+  selectedArea,
+  setSelectedArea,
+}) => {
   return (
-    <AspectRatio maxWidth="25em" ratio={1.525 / 1.4}>
+    <AspectRatio maxWidth="35em" ratio={1.525 / 1.4}>
       <Box
         bgColor="green.600"
         position="relative"
