@@ -81,6 +81,7 @@ export const DeviceStatus: React.FC = () => {
         </Flex>
 
         <IconButton
+          ml={2}
           aria-label="Connect to device"
           isDisabled={deviceConnected}
           isLoading={failureCount < 3 && failureCount !== 0}

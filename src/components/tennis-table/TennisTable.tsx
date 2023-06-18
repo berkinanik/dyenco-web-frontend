@@ -1,16 +1,27 @@
-import { AspectRatio, Box, Flex, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 
-export const TennisTable = () => {
+import { AspectRatio, Box, Grid, GridItem } from '@chakra-ui/react';
+
+import { TargetArea } from './TargetArea';
+
+export const TennisTable: React.FC = () => {
+  const [selectedArea, setSelectedArea] = useState<number>(2);
+
   return (
     <AspectRatio maxWidth="25em" ratio={1.525 / 1.4}>
       <Box
         bgColor="green.600"
-        h="13.7em"
-        w="15.25em"
         position="relative"
-        border="4px solid white"
+        border="4px solid"
+        borderColor="whiteAlpha.900"
       >
-        <Box bg="white" h="100%" w="4px" position="absolute" left="50%" />
+        <Box
+          bg="whiteAlpha.600"
+          h="100%"
+          w="4px"
+          position="absolute"
+          left="50%"
+        />
         <Box
           bg="white"
           w="100%"
@@ -31,51 +42,25 @@ export const TennisTable = () => {
           />
         </Box>
 
-        <Flex
-          justifyContent="space-between"
-          mt="50px"
-          mx="10%"
-          position="relative"
+        <Grid
+          position="absolute"
+          top="0"
+          h="80%"
+          w="100%"
+          gridTemplateColumns="repeat(3, 1fr)"
+          gap={1}
+          p={2}
         >
-          <Box
-            bg="red.500"
-            h="calc(33% - 10px)"
-            w="calc(33% - 10px)"
-            borderRadius="10px"
-            cursor="pointer"
-            _hover={{ bg: 'red.600' }}
-          >
-            <Text textAlign="center" color="white" fontWeight="bold" mt="50%">
-              Target 1
-            </Text>
-          </Box>
-
-          <Box
-            bg="blue.500"
-            h="calc(33% - 10px)"
-            w="calc(33% - 10px)"
-            borderRadius="10px"
-            cursor="pointer"
-            _hover={{ bg: 'blue.600' }}
-          >
-            <Text textAlign="center" color="white" fontWeight="bold" mt="50%">
-              Target 2
-            </Text>
-          </Box>
-
-          <Box
-            bg="yellow.500"
-            h="calc(33% - 10px)"
-            w="calc(33% - 10px)"
-            borderRadius="10px"
-            cursor="pointer"
-            _hover={{ bg: 'yellow.600' }}
-          >
-            <Text textAlign="center" color="white" fontWeight="bold" mt="50%">
-              Target 3
-            </Text>
-          </Box>
-        </Flex>
+          {Array.from({ length: 6 }, (_, i) => i + 1).map((area) => (
+            <GridItem key={area}>
+              <TargetArea
+                value={area}
+                selected={selectedArea === area}
+                onClick={() => setSelectedArea(area)}
+              />
+            </GridItem>
+          ))}
+        </Grid>
       </Box>
     </AspectRatio>
   );
