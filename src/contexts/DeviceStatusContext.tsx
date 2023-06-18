@@ -18,7 +18,7 @@ export type DeviceStatusContextType = {
 const initialStatus: DeviceStatus = {
   deviceConnected: false,
   operationMode: 'idle',
-  stepperMotorRate: 0.1,
+  stepperMotorRate: 0,
   horizontalAngle: 0,
   verticalAngle: 0,
   upperMotorVoltage: 0,

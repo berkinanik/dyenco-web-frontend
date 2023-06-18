@@ -18,7 +18,7 @@ import { useBorderColor } from '@/hooks/useBorderColor';
 import { useStartAdvancedMutation } from '@/services/mutations/device/useStartAdvanced';
 
 const schema = z.object({
-  stepperMotorRate: z.number().min(0.1).max(60),
+  stepperMotorRate: z.number().min(0).max(60),
   horizontalAngle: z.number().min(-90).max(90),
   verticalAngle: z.number().min(-90).max(90),
   upperMotorVoltage: z.number().min(0).max(12),
@@ -28,7 +28,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const defaultValues: FormData = {
-  stepperMotorRate: 0.1,
+  stepperMotorRate: 0,
   horizontalAngle: 0,
   verticalAngle: 0,
   upperMotorVoltage: 0,
@@ -89,9 +89,9 @@ export const AdvancedControlPage = () => {
                 <Slider
                   id="stepperMotorRate"
                   {...field}
-                  min={0.1}
+                  min={0}
                   max={60}
-                  step={0.1}
+                  step={0.5}
                 />
               </Box>
               <FormErrorMessage>{error && error?.message}</FormErrorMessage>
