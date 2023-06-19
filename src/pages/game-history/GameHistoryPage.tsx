@@ -116,22 +116,27 @@ export const GameHistoryPage = () => {
                                 </Tr>
                               </Thead>
                               <Tbody>
-                                {map(history.contents, (content, index) => (
-                                  <Tr key={index}>
-                                    <Td textAlign="center">{content.id}</Td>
-                                    <Td textAlign="center">
-                                      {content.targetArea}
-                                    </Td>
-                                    <Td textAlign="center">{content.spin}</Td>
-                                    <Td textAlign="center">
-                                      {content.ballFeedRate}
-                                    </Td>
-                                    <Td textAlign="center">
-                                      {millisecondsToSeconds(content.length)}{' '}
-                                      seconds
-                                    </Td>
-                                  </Tr>
-                                ))}
+                                {map(
+                                  orderBy(history.contents, ['id'], ['asc']),
+                                  (content, index) => (
+                                    <Tr key={index}>
+                                      <Td textAlign="center">
+                                        Variant #{content.id}
+                                      </Td>
+                                      <Td textAlign="center">
+                                        {content.targetArea}
+                                      </Td>
+                                      <Td textAlign="center">{content.spin}</Td>
+                                      <Td textAlign="center">
+                                        {content.ballFeedRate}
+                                      </Td>
+                                      <Td textAlign="center">
+                                        {millisecondsToSeconds(content.length)}{' '}
+                                        seconds
+                                      </Td>
+                                    </Tr>
+                                  ),
+                                )}
                               </Tbody>
                             </Table>
                           </Box>
