@@ -1,11 +1,11 @@
 import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 import { differenceInSeconds } from 'date-fns';
 
-import { useGameStatusContext } from '@/contexts/GameContext';
+import { useGameContext } from '@/contexts/GameContext';
 import { useBorderColor } from '@/hooks/useBorderColor';
 
 export const GameStatus = () => {
-  const { gameStatus } = useGameStatusContext();
+  const { gameStatus } = useGameContext();
 
   return (
     <Box

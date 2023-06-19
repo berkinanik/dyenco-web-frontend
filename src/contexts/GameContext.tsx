@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-import { isEmpty, isEqual, reduce, slice } from 'lodash';
+import { filter, isEmpty, isEqual, reduce, slice, uniqueId } from 'lodash';
 import useLocalStorage from 'use-local-storage';
 
 import { GameMode } from '@/types/game';
@@ -27,31 +27,35 @@ type GameContentHistory = {
 } & GameContentBase;
 
 type GameHistory = {
+  id: string;
   date: number;
   length: number;
   mode: GameMode;
   contents: GameContentHistory[];
 };
 
-type GameStatusContextType = {
+type GameContextType = {
   gameStatus: GameStatus | null;
   startOrUpdateGame: (mode: GameMode, content: GameContent) => void;
   endGame: () => void;
   gameHistory: GameHistory[];
+  removeGameHistory: (id: string) => void;
 };
 
-const GameStatusContext = createContext<GameStatusContextType>({
+const GameContext = createContext<GameContextType>({
   gameStatus: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   startOrUpdateGame: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   endGame: () => {},
   gameHistory: [],
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  removeGameHistory: () => {},
 });
 
-export const useGameStatusContext = () => useContext(GameStatusContext);
+export const useGameContext = () => useContext(GameContext);
 
-export const GameStatusProvider: React.FC<{
+export const GameContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [gameStatus, setGameStatus] = useState<GameStatus | null>(null);
@@ -129,6 +133,7 @@ export const GameStatusProvider: React.FC<{
     setGameHistory((prevHistory) => [
       ...(prevHistory || []),
       {
+        id: uniqueId('game_'),
         date: currentDateTime,
         length: gameLength,
         mode: gameStatus.mode,
@@ -140,16 +145,27 @@ export const GameStatusProvider: React.FC<{
     setGameContentArray([]);
   };
 
+  const handleRemoveGameHistory = (id: string) => {
+    setGameHistory((prevHistory) => {
+      if (isEmpty(prevHistory)) {
+        return prevHistory;
+      }
+
+      return filter(prevHistory, (history) => history.id !== id);
+    });
+  };
+
   return (
-    <GameStatusContext.Provider
+    <GameContext.Provider
       value={{
         gameStatus,
         startOrUpdateGame: handleGameStartOrUpdate,
         endGame: handleGameEnd,
         gameHistory,
+        removeGameHistory: handleRemoveGameHistory,
       }}
     >
       {children}
-    </GameStatusContext.Provider>
+    </GameContext.Provider>
   );
 };

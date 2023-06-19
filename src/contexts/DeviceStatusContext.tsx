@@ -35,7 +35,7 @@ const DeviceStatusContext = createContext<DeviceStatusContextType>({
 
 export const useDeviceStatusContext = () => useContext(DeviceStatusContext);
 
-export const DeviceStatusProvider: React.FC<{
+export const DeviceStatusContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [status, setStatus] = useState<DeviceStatus>(initialStatus);
