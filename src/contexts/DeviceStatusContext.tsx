@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react';
 
 import { OperationMode } from '@/types/settings';
 
-export type DeviceStatus = {
+type DeviceStatus = {
   deviceConnected: boolean;
   operationMode: OperationMode;
   stepperMotorRate: number;
@@ -12,7 +12,7 @@ export type DeviceStatus = {
   lowerMotorVoltage: number;
 };
 
-export type DeviceStatusContextType = {
+type DeviceStatusContextType = {
   status: DeviceStatus;
   changeStatus: (newStatus: Partial<DeviceStatus>) => void;
 };
@@ -27,7 +27,7 @@ const initialStatus: DeviceStatus = {
   lowerMotorVoltage: 0,
 };
 
-export const DeviceStatusContext = createContext<DeviceStatusContextType>({
+const DeviceStatusContext = createContext<DeviceStatusContextType>({
   status: initialStatus,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   changeStatus: () => {},

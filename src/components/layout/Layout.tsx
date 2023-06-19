@@ -1,6 +1,7 @@
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 
 import { DeviceStatus } from '../device-status/DeviceStatus';
+import { GameStatus } from '../game-status/GameStatus';
 
 type Props = {
   children?: React.ReactNode;
@@ -35,7 +36,15 @@ export const Layout: React.FC<Props> = ({ children }) => {
             lg: 2,
           }}
         >
-          <DeviceStatus />
+          <Grid gridTemplateColumns="1fr" gap={4}>
+            <GridItem>
+              <DeviceStatus />
+            </GridItem>
+
+            <GridItem>
+              <GameStatus />
+            </GridItem>
+          </Grid>
         </GridItem>
       </Grid>
     </Box>

@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom';
 
 import { Navbar } from './components/navbar/Navbar';
 import { DeviceStatusProvider } from './contexts/DeviceStatusContext';
+import { GameStatusProvider } from './contexts/GameContext';
 import { Routes } from './routes/Routes';
 import { Query } from './services/queries/types';
 
@@ -32,13 +33,15 @@ export const App: React.FC = () => {
   return (
     <Box display="flex" width="100%" height="100%" flexDirection="column">
       <QueryClientProvider client={queryClient}>
-        <DeviceStatusProvider>
-          <HashRouter>
-            <Navbar />
+        <GameStatusProvider>
+          <DeviceStatusProvider>
+            <HashRouter>
+              <Navbar />
 
-            <Routes />
-          </HashRouter>
-        </DeviceStatusProvider>
+              <Routes />
+            </HashRouter>
+          </DeviceStatusProvider>
+        </GameStatusProvider>
       </QueryClientProvider>
     </Box>
   );
