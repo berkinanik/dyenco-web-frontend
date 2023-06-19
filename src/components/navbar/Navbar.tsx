@@ -21,6 +21,10 @@ const Links: { name: string; to: string }[] = [
     to: '/',
   },
   {
+    name: 'Random Game',
+    to: '/random-game',
+  },
+  {
     name: 'Advanced Control',
     to: '/advanced-control',
   },

@@ -4,6 +4,7 @@ export enum Mutation {
   STOP = 'stop',
   ADVANCED_MODE = 'advanced-mode',
   BASIC_MODE = 'basic-mode',
+  RANDOM_MODE = 'random-mode',
 }
 
 export interface BaseMutationResponse {
