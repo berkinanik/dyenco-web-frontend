@@ -6,21 +6,22 @@ import { GameHistoryPage } from '@/pages/game-history/GameHistoryPage';
 import { NotFoundPage } from '@/pages/not-found/NotFoundPage';
 
 import { withLayout } from './withLayout';
+import { withStatusLayout } from './withStatusLayout';
 
 export const Routes: React.FC = () => {
   return (
     <Switch>
       <Route path="/" exact>
-        {withLayout(BasicControlPage)}
+        {withStatusLayout(BasicControlPage)}
       </Route>
 
-      <Route path="/advanced-control">{withLayout(AdvancedControlPage)}</Route>
-
-      <Route path="/game-history">
-        <GameHistoryPage />
+      <Route path="/advanced-control">
+        {withStatusLayout(AdvancedControlPage)}
       </Route>
 
-      <Route path="*">{NotFoundPage}</Route>
+      <Route path="/game-history">{withLayout(GameHistoryPage)}</Route>
+
+      <Route path="*">{withLayout(NotFoundPage)}</Route>
     </Switch>
   );
 };

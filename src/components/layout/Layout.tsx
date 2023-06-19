@@ -1,7 +1,4 @@
-import { Box, Grid, GridItem } from '@chakra-ui/react';
-
-import { DeviceStatus } from '../device-status/DeviceStatus';
-import { GameStatus } from '../game-status/GameStatus';
+import { Box } from '@chakra-ui/react';
 
 type Props = {
   children?: React.ReactNode;
@@ -11,42 +8,14 @@ export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <Box
       display="flex"
-      flexDirection="row"
+      flexDirection="column"
       maxWidth="90em"
       padding={4}
       marginX="auto"
       width="100%"
+      flex={1}
     >
-      <Grid
-        templateColumns={{
-          base: '1fr',
-          lg: '2fr 1fr',
-        }}
-        gap={4}
-        flex={1}
-      >
-        <GridItem>{children}</GridItem>
-
-        <GridItem
-          gridRowStart={{
-            base: 1,
-          }}
-          gridColumnStart={{
-            base: 1,
-            lg: 2,
-          }}
-        >
-          <Grid gridTemplateColumns="1fr" gap={4}>
-            <GridItem>
-              <DeviceStatus />
-            </GridItem>
-
-            <GridItem>
-              <GameStatus />
-            </GridItem>
-          </Grid>
-        </GridItem>
-      </Grid>
+      {children}
     </Box>
   );
 };

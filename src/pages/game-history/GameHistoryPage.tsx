@@ -38,7 +38,7 @@ export const GameHistoryPage = () => {
 
   return (
     <>
-      <Box p={4}>
+      <Box p={4} overflowX="auto">
         <Table variant="simple" textAlign="center">
           <Thead>
             <Tr>
@@ -52,7 +52,9 @@ export const GameHistoryPage = () => {
           <Tbody>
             {gameHistory.length === 0 ? (
               <Tr>
-                <Td colSpan={4}>No game history available.</Td>
+                <Td colSpan={5} textAlign="center">
+                  No game history available.
+                </Td>
               </Tr>
             ) : (
               gameHistory.map((history) => (
@@ -94,8 +96,8 @@ export const GameHistoryPage = () => {
                     </Td>
                   </Tr>
 
-                  <tr style={{ border: 0 }}>
-                    <td colSpan={5} style={{ border: 0, padding: 0 }}>
+                  <tr>
+                    <td colSpan={5}>
                       <Collapse in={expandedId === history.id} animateOpacity>
                         <Box py={4} px={10}>
                           <Table variant="striped">
