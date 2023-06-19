@@ -15,7 +15,7 @@ export const RadioButton: React.FC<Props> = ({ equalWidth, ...props }) => {
       <input {...input} />
       <Box
         {...checkbox}
-        cursor="pointer"
+        cursor={props.isDisabled ? 'default' : 'pointer'}
         borderWidth="1px"
         borderRadius="md"
         boxShadow="md"
@@ -24,14 +24,22 @@ export const RadioButton: React.FC<Props> = ({ equalWidth, ...props }) => {
           textColor: 'white',
           borderColor: 'teal.600 !important',
         }}
-        _hover={{
-          bg: 'teal.800',
-          textColor: 'white',
-          borderColor: 'teal.800',
-        }}
-        _focus={{
-          boxShadow: 'outline',
-        }}
+        _hover={
+          props.isDisabled
+            ? undefined
+            : {
+                bg: 'teal.800',
+                textColor: 'white',
+                borderColor: 'teal.800',
+              }
+        }
+        _focus={
+          props.isDisabled
+            ? undefined
+            : {
+                boxShadow: 'outline',
+              }
+        }
         px={4}
         py={2}
         fontSize="md"

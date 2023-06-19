@@ -8,6 +8,7 @@ type Props = {
   value: string | number;
   onChange: (value: string) => void;
   equalWidth?: boolean;
+  disabled?: boolean;
 };
 
 export const RadioGroup: React.FC<Props> = ({
@@ -16,6 +17,7 @@ export const RadioGroup: React.FC<Props> = ({
   value,
   onChange,
   equalWidth,
+  disabled = false,
 }) => {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name,
@@ -31,7 +33,12 @@ export const RadioGroup: React.FC<Props> = ({
         const radio = getRadioProps({ value: option.value });
 
         return (
-          <RadioButton key={option.value} equalWidth={equalWidth} {...radio}>
+          <RadioButton
+            key={option.value}
+            equalWidth={equalWidth}
+            {...radio}
+            isDisabled={disabled}
+          >
             {option.label}
           </RadioButton>
         );

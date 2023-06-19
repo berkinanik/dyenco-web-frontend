@@ -5,11 +5,13 @@ import { TargetArea } from './TargetArea';
 type Props = {
   selectedArea: number;
   setSelectedArea: (area: number) => void;
+  disabled?: boolean;
 };
 
 export const TennisTable: React.FC<Props> = ({
   selectedArea,
   setSelectedArea,
+  disabled = false,
 }) => {
   return (
     <AspectRatio maxWidth="35em" ratio={1.525 / 1.4}>
@@ -61,6 +63,7 @@ export const TennisTable: React.FC<Props> = ({
                 value={area}
                 selected={selectedArea === area}
                 onClick={() => setSelectedArea(area)}
+                disabled={disabled}
               />
             </GridItem>
           ))}

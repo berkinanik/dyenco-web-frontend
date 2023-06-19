@@ -1,12 +1,12 @@
-import { VStack } from '@chakra-ui/react';
+import { BoxProps, VStack } from '@chakra-ui/react';
 
 import { useBorderColor } from '@/hooks/useBorderColor';
 
 type Props = {
   children: React.ReactNode;
-};
+} & BoxProps;
 
-export const FormBox: React.FC<Props> = ({ children }) => {
+export const FormBox: React.FC<Props> = ({ children, ...boxProps }) => {
   return (
     <VStack
       spacing={6}
@@ -16,6 +16,7 @@ export const FormBox: React.FC<Props> = ({ children }) => {
       borderRadius="md"
       borderStyle="solid"
       borderColor={useBorderColor()}
+      {...boxProps}
     >
       {children}
     </VStack>

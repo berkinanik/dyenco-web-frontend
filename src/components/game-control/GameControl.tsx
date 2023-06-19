@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useState } from 'react';
+
 import { Button } from '@chakra-ui/button';
 import {
   FormControl,
@@ -33,16 +35,18 @@ const defaultValues: FormData = {
 };
 
 type Props = {
-  random?: boolean;
   onSubmit: SubmitHandler<FormData>;
   isLoading: boolean;
+  random?: boolean;
 };
 
 export const GameControl: React.FC<Props> = ({
-  random,
   onSubmit,
   isLoading,
+  random = false,
 }) => {
+  const [randomModeStarted, setRandomModeStarted] = useState(false);
+
   const {
     status: { deviceConnected, operationMode },
   } = useDeviceStatusContext();
@@ -53,6 +57,44 @@ export const GameControl: React.FC<Props> = ({
   });
 
   const selectedArea = watch('targetArea');
+
+  useEffect(() => {
+    if (operationMode === OperationMode.IDLE) {
+      setRandomModeStarted(false);
+    }
+  }, [random, operationMode]);
+
+  const setRandomValues = useCallback(() => {
+    setValue('targetArea', Math.floor(Math.random() * 6) + 1);
+    setValue('spin', Object.values(Spin)[Math.floor(Math.random() * 3)]);
+    setValue(
+      'ballFeedRate',
+      Object.values(BallFeedRate)[Math.floor(Math.random() * 3)],
+    );
+  }, [setValue]);
+
+  useEffect(() => {
+    if (random && randomModeStarted) {
+      const randomInterval = setInterval(() => {
+        console.log('setting random values');
+
+        setRandomValues();
+
+        handleSubmit(onSubmit)();
+      }, 3000);
+
+      return () => {
+        clearInterval(randomInterval);
+      };
+    }
+  }, [
+    random,
+    randomModeStarted,
+    setValue,
+    handleSubmit,
+    onSubmit,
+    setRandomValues,
+  ]);
 
   return (
     <Grid
@@ -66,6 +108,7 @@ export const GameControl: React.FC<Props> = ({
         <TennisTable
           selectedArea={selectedArea}
           setSelectedArea={(area) => setValue('targetArea', area)}
+          disabled={random}
         />
       </GridItem>
 
@@ -104,7 +147,12 @@ export const GameControl: React.FC<Props> = ({
                 return (
                   <FormControl isInvalid={!!error}>
                     <FormLabel htmlFor="spin">Spin</FormLabel>
-                    <RadioGroup {...field} equalWidth options={options} />
+                    <RadioGroup
+                      {...field}
+                      equalWidth
+                      options={options}
+                      disabled={random}
+                    />
                     <FormErrorMessage>{error?.message}</FormErrorMessage>
                   </FormControl>
                 );
@@ -151,24 +199,53 @@ export const GameControl: React.FC<Props> = ({
                 return (
                   <FormControl isInvalid={!!error}>
                     <FormLabel htmlFor="ballFeedRate">Ball Feed</FormLabel>
-                    <RadioGroup {...field} equalWidth options={options} />
+                    <RadioGroup
+                      {...field}
+                      equalWidth
+                      options={options}
+                      disabled={random}
+                    />
                     <FormErrorMessage>{error?.message}</FormErrorMessage>
                   </FormControl>
                 );
               }}
             />
 
-            <Button
-              type="submit"
-              isLoading={isLoading}
-              isDisabled={!deviceConnected}
-              colorScheme={
-                operationMode === OperationMode.IDLE ? 'green' : 'teal'
-              }
-            >
-              {operationMode === OperationMode.IDLE ? 'Start' : 'Update'}
-            </Button>
+            {random ? null : (
+              <Button
+                type="submit"
+                isLoading={isLoading}
+                isDisabled={!deviceConnected}
+                colorScheme={
+                  operationMode === OperationMode.IDLE ? 'green' : 'teal'
+                }
+              >
+                {operationMode === OperationMode.IDLE ? 'Start' : 'Update'}
+              </Button>
+            )}
           </FormBox>
+
+          {random ? (
+            <FormBox mt={4}>
+              <Button
+                type="button"
+                isLoading={isLoading}
+                isDisabled={!deviceConnected || randomModeStarted}
+                colorScheme={
+                  operationMode === OperationMode.IDLE ? 'green' : 'teal'
+                }
+                onClick={() => {
+                  setRandomModeStarted(true);
+                  setRandomValues();
+                  handleSubmit(onSubmit)();
+                }}
+              >
+                {randomModeStarted
+                  ? 'Random Mode Running'
+                  : 'Start Random Mode'}
+              </Button>
+            </FormBox>
+          ) : null}
         </form>
       </GridItem>
     </Grid>
