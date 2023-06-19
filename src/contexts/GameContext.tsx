@@ -67,10 +67,9 @@ export const GameContextProvider: React.FC<{
   const [gameStatus, setGameStatus] = useState<GameStatus | null>(null);
   const [gameContentArray, setGameContentArray] = useState<GameContent[]>([]);
 
-  const [gameHistory, setGameHistory] = useLocalStorage<GameHistory[]>(
-    'gameHistory',
-    [],
-  );
+  const [gameHistory, setGameHistory] = useLocalStorage<
+    GameHistory[] | undefined
+  >('gameHistory', []);
 
   const handleGameStartOrUpdate = (
     mode: GameMode,
