@@ -14,7 +14,7 @@ import { z } from 'zod';
 import { FormBox } from '@/components/form-box/FormBox';
 import { Slider } from '@/components/forms/slider/Slider';
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
-import { useStartAdvancedMutation } from '@/services/mutations/device/useStartAdvancedMutation';
+import { useAdvancedModeMutation } from '@/services/mutations/device/useAdvancedModeMutation';
 import { OperationMode } from '@/types/settings';
 
 const schema = z.object({
@@ -55,10 +55,10 @@ export const AdvancedControlPage = () => {
     defaultValues,
   });
 
-  const { mutate, isLoading } = useStartAdvancedMutation({
-    onSuccess: () => {
+  const { mutate, isLoading } = useAdvancedModeMutation({
+    onSuccess: (data) => {
       toast({
-        title: 'Session started',
+        title: data.message,
         status: 'success',
         duration: 3000,
         isClosable: true,

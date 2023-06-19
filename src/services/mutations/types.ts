@@ -1,9 +1,9 @@
-import { BallFeedRate, Spin } from '@/pages/basic-control/BasicControlPage';
+import { BallFeedRate, Spin } from '@/types/settings';
 
 export enum Mutation {
   STOP = 'stop',
-  START_ADVANCED = 'start-advanced',
-  START_BASIC = 'start-basic',
+  ADVANCED_MODE = 'advanced-mode',
+  BASIC_MODE = 'basic-mode',
 }
 
 export interface BaseMutationResponse {
@@ -11,7 +11,7 @@ export interface BaseMutationResponse {
   status: string;
 }
 
-export interface StartAdvancedPayload {
+export interface AdvancedModePayload {
   stepperMotorRate: number;
   horizontalAngle: number;
   verticalAngle: number;
@@ -19,7 +19,7 @@ export interface StartAdvancedPayload {
   lowerMotorVoltage: number;
 }
 
-export interface StartBasicPayload {
+export interface BasicModePayload {
   targetArea: number;
   spin: Spin;
   ballFeedRate: BallFeedRate;
