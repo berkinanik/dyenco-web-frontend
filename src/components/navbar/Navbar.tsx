@@ -24,6 +24,10 @@ const Links: { name: string; to: string }[] = [
     name: 'Advanced Control',
     to: '/advanced-control',
   },
+  {
+    name: 'Game History',
+    to: '/game-history',
+  },
 ];
 
 export const Navbar: React.FC = () => {
