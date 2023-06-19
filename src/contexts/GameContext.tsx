@@ -150,22 +150,36 @@ export const GameContextProvider: React.FC<{
 
     const gameLength = currentDateTime - gameStatus.startedAt;
 
-    getSuccessfulHits().then((data) => {
-      setGameHistory((prevHistory) => [
-        ...(prevHistory || []),
-        {
-          id: uuidv4(),
-          date: currentDateTime,
-          length: gameLength,
-          mode: gameStatus.mode,
-          successfulHits: data?.successfulHits,
-          contents: gameContentReduced,
-        },
-      ]);
+    setGameHistory((prevHistory) => [
+      ...(prevHistory || []),
+      {
+        id: uuidv4(),
+        date: currentDateTime,
+        length: gameLength,
+        mode: gameStatus.mode,
+        contents: gameContentReduced,
+      },
+    ]);
 
-      setGameStatus(null);
-      setGameContentArray([]);
-    });
+    setGameStatus(null);
+    setGameContentArray([]);
+
+    // getSuccessfulHits().then((data) => {
+    //   setGameHistory((prevHistory) => [
+    //     ...(prevHistory || []),
+    //     {
+    //       id: uuidv4(),
+    //       date: currentDateTime,
+    //       length: gameLength,
+    //       mode: gameStatus.mode,
+    //       successfulHits: data?.successfulHits,
+    //       contents: gameContentReduced,
+    //     },
+    //   ]);
+
+    //   setGameStatus(null);
+    //   setGameContentArray([]);
+    // });
   };
 
   const handleGameReset = () => {
