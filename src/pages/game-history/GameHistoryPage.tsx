@@ -28,7 +28,10 @@ export const GameHistoryPage = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [gameIdToDelete, setGameIdToDelete] = useState<string | null>(null);
+  const [gameIdToDelete, setGameIdToDelete] = useState<{
+    id: string;
+    index: number;
+  } | null>(null);
   const cancelRef = useRef(null);
 
   const { gameHistory, removeGameHistory } = useGameContext();
@@ -93,7 +96,10 @@ export const GameHistoryPage = () => {
                           size="sm"
                           icon={<DeleteIcon />}
                           onClick={() => {
-                            setGameIdToDelete(history.id);
+                            setGameIdToDelete({
+                              id: history.id,
+                              index: gameHistory.length - index,
+                            });
                             onOpen();
                           }}
                           ml={2}
@@ -164,7 +170,7 @@ export const GameHistoryPage = () => {
                 fontWeight="bold"
                 textAlign="center"
               >
-                Delete Game #{gameIdToDelete}
+                Delete Game #{gameIdToDelete.index}
               </AlertDialogHeader>
 
               <AlertDialogFooter>
@@ -174,7 +180,7 @@ export const GameHistoryPage = () => {
                 <Button
                   colorScheme="red"
                   onClick={() => {
-                    removeGameHistory(gameIdToDelete);
+                    removeGameHistory(gameIdToDelete.id);
                     setGameIdToDelete(null);
                     onClose();
                   }}

@@ -3,6 +3,7 @@ import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
 import ReactDOM from 'react-dom/client';
+import 'regenerator-runtime/runtime';
 
 import { App } from './App.tsx';
 

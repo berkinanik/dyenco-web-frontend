@@ -7,9 +7,14 @@ import {
   FormLabel,
 } from '@chakra-ui/form-control';
 import { Icon } from '@chakra-ui/icon';
-import { Grid, GridItem, HStack, Text } from '@chakra-ui/layout';
+import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/layout';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  Controller,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 import { AiOutlineRedo, AiOutlineRight, AiOutlineUndo } from 'react-icons/ai';
 import { z } from 'zod';
 
@@ -19,6 +24,7 @@ import { BallFeedRate, OperationMode, Spin } from '@/types/settings';
 import { FormBox } from '../form-box/FormBox';
 import { RadioGroup } from '../forms/radio-button/RadioGroup';
 import { TennisTable } from '../tennis-table/TennisTable';
+import { VoiceControl } from '../voice-control/VoiceControl';
 
 const schema = z.object({
   targetArea: z.number().min(1).max(6),
@@ -51,10 +57,12 @@ export const GameControl: React.FC<Props> = ({
     status: { deviceConnected, operationMode },
   } = useDeviceStatusContext();
 
-  const { handleSubmit, control, watch, setValue } = useForm<FormData>({
+  const methods = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues,
   });
+
+  const { handleSubmit, control, watch, setValue } = methods;
 
   const selectedArea = watch('targetArea');
 
@@ -111,140 +119,154 @@ export const GameControl: React.FC<Props> = ({
       </GridItem>
 
       <GridItem>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormBox>
-            <Controller<FormData, 'spin'>
-              name="spin"
-              control={control}
-              render={({ field: { ref, ...field }, fieldState: { error } }) => {
-                const options = [
-                  {
-                    label: (
-                      <HStack>
-                        <Text>Topspin</Text>
-                        <Icon as={AiOutlineRedo} />
-                      </HStack>
-                    ),
-                    value: Spin.Topspin,
-                  },
-                  {
-                    label: 'None',
-                    value: Spin.None,
-                  },
-                  {
-                    label: (
-                      <HStack>
-                        <Text>Backspin</Text>
-                        <Icon as={AiOutlineUndo} />
-                      </HStack>
-                    ),
-                    value: Spin.Backspin,
-                  },
-                ];
+        <VStack spacing={4} align="stretch">
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormBox>
+                <Controller<FormData, 'spin'>
+                  name="spin"
+                  control={control}
+                  render={({
+                    field: { ref, ...field },
+                    fieldState: { error },
+                  }) => {
+                    const options = [
+                      {
+                        label: (
+                          <HStack>
+                            <Text>Topspin</Text>
+                            <Icon as={AiOutlineRedo} />
+                          </HStack>
+                        ),
+                        value: Spin.Topspin,
+                      },
+                      {
+                        label: 'None',
+                        value: Spin.None,
+                      },
+                      {
+                        label: (
+                          <HStack>
+                            <Text>Backspin</Text>
+                            <Icon as={AiOutlineUndo} />
+                          </HStack>
+                        ),
+                        value: Spin.Backspin,
+                      },
+                    ];
 
-                return (
-                  <FormControl isInvalid={!!error}>
-                    <FormLabel htmlFor="spin">Spin</FormLabel>
-                    <RadioGroup
-                      {...field}
-                      equalWidth
-                      options={options}
-                      disabled={random}
-                    />
-                    <FormErrorMessage>{error?.message}</FormErrorMessage>
-                  </FormControl>
-                );
-              }}
-            />
+                    return (
+                      <FormControl isInvalid={!!error}>
+                        <FormLabel htmlFor="spin">Spin</FormLabel>
+                        <RadioGroup
+                          {...field}
+                          equalWidth
+                          options={options}
+                          disabled={random}
+                        />
+                        <FormErrorMessage>{error?.message}</FormErrorMessage>
+                      </FormControl>
+                    );
+                  }}
+                />
 
-            <Controller<FormData, 'ballFeedRate'>
-              name="ballFeedRate"
-              control={control}
-              render={({ field: { ref, ...field }, fieldState: { error } }) => {
-                const options = [
-                  {
-                    label: (
-                      <HStack spacing={0}>
-                        <Text>Slow</Text>
-                        <Icon as={AiOutlineRight} ml={1} />
-                      </HStack>
-                    ),
-                    value: BallFeedRate.Low,
-                  },
-                  {
-                    label: (
-                      <HStack spacing={0}>
-                        <Text>Medium</Text>
-                        <Icon as={AiOutlineRight} ml={1} />
-                        <Icon as={AiOutlineRight} ml={-1.5} />
-                      </HStack>
-                    ),
-                    value: BallFeedRate.Medium,
-                  },
-                  {
-                    label: (
-                      <HStack spacing={0}>
-                        <Text>High</Text>
-                        <Icon as={AiOutlineRight} ml={1} />
-                        <Icon as={AiOutlineRight} ml={-1.5} />
-                        <Icon as={AiOutlineRight} ml={-1.5} />
-                      </HStack>
-                    ),
-                    value: BallFeedRate.High,
-                  },
-                ];
+                <Controller<FormData, 'ballFeedRate'>
+                  name="ballFeedRate"
+                  control={control}
+                  render={({
+                    field: { ref, ...field },
+                    fieldState: { error },
+                  }) => {
+                    const options = [
+                      {
+                        label: (
+                          <HStack spacing={0}>
+                            <Text>Slow</Text>
+                            <Icon as={AiOutlineRight} ml={1} />
+                          </HStack>
+                        ),
+                        value: BallFeedRate.Low,
+                      },
+                      {
+                        label: (
+                          <HStack spacing={0}>
+                            <Text>Medium</Text>
+                            <Icon as={AiOutlineRight} ml={1} />
+                            <Icon as={AiOutlineRight} ml={-1.5} />
+                          </HStack>
+                        ),
+                        value: BallFeedRate.Medium,
+                      },
+                      {
+                        label: (
+                          <HStack spacing={0}>
+                            <Text>High</Text>
+                            <Icon as={AiOutlineRight} ml={1} />
+                            <Icon as={AiOutlineRight} ml={-1.5} />
+                            <Icon as={AiOutlineRight} ml={-1.5} />
+                          </HStack>
+                        ),
+                        value: BallFeedRate.High,
+                      },
+                    ];
 
-                return (
-                  <FormControl isInvalid={!!error}>
-                    <FormLabel htmlFor="ballFeedRate">Ball Feed</FormLabel>
-                    <RadioGroup
-                      {...field}
-                      equalWidth
-                      options={options}
-                      disabled={random}
-                    />
-                    <FormErrorMessage>{error?.message}</FormErrorMessage>
-                  </FormControl>
-                );
-              }}
-            />
+                    return (
+                      <FormControl isInvalid={!!error}>
+                        <FormLabel htmlFor="ballFeedRate">Ball Feed</FormLabel>
+                        <RadioGroup
+                          {...field}
+                          equalWidth
+                          options={options}
+                          disabled={random}
+                        />
+                        <FormErrorMessage>{error?.message}</FormErrorMessage>
+                      </FormControl>
+                    );
+                  }}
+                />
+
+                {random ? null : (
+                  <Button
+                    type="submit"
+                    isLoading={isLoading}
+                    isDisabled={!deviceConnected}
+                    colorScheme={
+                      operationMode === OperationMode.IDLE ? 'green' : 'teal'
+                    }
+                  >
+                    {operationMode === OperationMode.IDLE ? 'Start' : 'Update'}
+                  </Button>
+                )}
+              </FormBox>
+
+              {random ? (
+                <FormBox mt={4}>
+                  <Button
+                    type="button"
+                    isLoading={isLoading}
+                    isDisabled={!deviceConnected || randomModeStarted}
+                    colorScheme={
+                      operationMode === OperationMode.IDLE ? 'green' : 'teal'
+                    }
+                    onClick={() => {
+                      setRandomModeStarted(true);
+                      setRandomValues();
+                      handleSubmit(onSubmit)();
+                    }}
+                  >
+                    {randomModeStarted
+                      ? 'Random Mode Running'
+                      : 'Start Random Mode'}
+                  </Button>
+                </FormBox>
+              ) : null}
+            </form>
 
             {random ? null : (
-              <Button
-                type="submit"
-                isLoading={isLoading}
-                isDisabled={!deviceConnected}
-                colorScheme={
-                  operationMode === OperationMode.IDLE ? 'green' : 'teal'
-                }
-              >
-                {operationMode === OperationMode.IDLE ? 'Start' : 'Update'}
-              </Button>
+              <VoiceControl handleSubmit={() => handleSubmit(onSubmit)()} />
             )}
-          </FormBox>
-
-          {random ? (
-            <FormBox mt={4}>
-              <Button
-                type="button"
-                isLoading={isLoading}
-                isDisabled={!deviceConnected || randomModeStarted}
-                colorScheme={
-                  operationMode === OperationMode.IDLE ? 'green' : 'teal'
-                }
-                onClick={() => {
-                  setRandomModeStarted(true);
-                  setRandomValues();
-                  handleSubmit(onSubmit)();
-                }}
-              >
-                {randomModeStarted
-                  ? 'Random Mode Running'
-                  : 'Start Random Mode'}
-              </Button>
-            </FormBox>
-          ) : null}
-        </form>
+          </FormProvider>
+        </VStack>
       </GridItem>
     </Grid>
   );
