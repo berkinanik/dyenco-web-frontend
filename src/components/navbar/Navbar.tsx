@@ -9,28 +9,35 @@ import {
   Stack,
   Image,
   useColorMode,
+  Icon,
+  As,
 } from '@chakra-ui/react';
+import { FaGamepad, FaHistory, FaRandom, FaTools } from 'react-icons/fa';
 
 import Logo from '@/assets/logo.jpg';
 
 import { NavLink } from './NavbarLink';
 
-const Links: { name: string; to: string }[] = [
+const Links: { name: string; to: string; icon?: As }[] = [
   {
     name: 'Basic',
     to: '/',
+    icon: FaGamepad,
   },
   {
     name: 'Random Game',
     to: '/random-game',
+    icon: FaRandom,
   },
   {
     name: 'Advanced Control',
     to: '/advanced-control',
+    icon: FaTools,
   },
   {
     name: 'Game History',
     to: '/game-history',
+    icon: FaHistory,
   },
 ];
 
@@ -63,9 +70,12 @@ export const Navbar: React.FC = () => {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
             >
-              {Links.map(({ name, to }) => (
+              {Links.map(({ name, to, icon }) => (
                 <NavLink key={name} to={to}>
-                  {name}
+                  <Flex align="center">
+                    {name}
+                    {icon && <Icon as={icon} ml={2} />}
+                  </Flex>
                 </NavLink>
               ))}
             </HStack>
