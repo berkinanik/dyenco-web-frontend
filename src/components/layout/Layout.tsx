@@ -9,7 +9,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
     <Box
       display="flex"
       flexDirection="column"
-      maxWidth="90em"
+      maxWidth="100em"
       padding={4}
       marginX="auto"
       width="100%"

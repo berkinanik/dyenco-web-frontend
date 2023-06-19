@@ -45,7 +45,7 @@ export const Navbar: React.FC = () => {
           h={16}
           alignItems={'center'}
           justifyContent={'space-between'}
-          maxWidth="90em"
+          maxWidth="100em"
           mx="auto"
         >
           <IconButton

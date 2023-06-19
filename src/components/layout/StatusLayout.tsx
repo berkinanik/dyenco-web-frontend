@@ -12,7 +12,7 @@ export const StatusLayout: React.FC<Props> = ({ children }) => {
     <Box
       display="flex"
       flexDirection="row"
-      maxWidth="90em"
+      maxWidth="100em"
       padding={4}
       marginX="auto"
       width="100%"
