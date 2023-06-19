@@ -11,3 +11,12 @@ export const client = axiosBase.create({
     'Content-Type': 'application/json',
   },
 });
+
+const SUCCESS_BASE_URL = 'http://localhost:8001/api';
+
+export const successClient = axiosBase.create({
+  baseURL: SUCCESS_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});

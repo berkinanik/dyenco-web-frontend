@@ -48,15 +48,16 @@ export const GameHistoryPage = () => {
             <Tr>
               <Th textAlign="center">#</Th>
               <Th textAlign="center">Date</Th>
-              <Th textAlign="center">Length</Th>
               <Th textAlign="center">Mode</Th>
+              <Th textAlign="center">Length</Th>
+              <Th textAlign="center">Successful</Th>
               <Th textAlign="center">Action</Th>
             </Tr>
           </Thead>
           <Tbody>
             {typeof gameHistory === 'undefined' || gameHistory.length === 0 ? (
               <Tr>
-                <Td colSpan={5} textAlign="center">
+                <Td colSpan={6} textAlign="center">
                   No game history available.
                 </Td>
               </Tr>
@@ -72,10 +73,15 @@ export const GameHistoryPage = () => {
                       <Td textAlign="center">
                         {format(history.date, 'dd.MM.yyyy HH:mm')}
                       </Td>
+                      <Td textAlign="center">{history.mode}</Td>
                       <Td textAlign="center">
                         {millisecondsToSeconds(history.length)} seconds
                       </Td>
-                      <Td textAlign="center">{history.mode}</Td>
+                      <Td textAlign="center">
+                        {typeof history.successfulHits !== 'undefined'
+                          ? `${history.successfulHits} hits`
+                          : ''}{' '}
+                      </Td>
                       <Td textAlign="center">
                         <IconButton
                           aria-label="Expand"
@@ -108,7 +114,7 @@ export const GameHistoryPage = () => {
                     </Tr>
 
                     <tr>
-                      <td colSpan={5}>
+                      <td colSpan={6}>
                         <Collapse in={expandedId === history.id} animateOpacity>
                           <Box py={4} px={10}>
                             <Table variant="striped">

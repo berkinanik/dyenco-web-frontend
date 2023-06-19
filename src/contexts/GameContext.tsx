@@ -4,6 +4,7 @@ import { filter, isEmpty, isEqual, omit, reduce, slice } from 'lodash';
 import useLocalStorage from 'use-local-storage';
 import { v4 as uuidv4 } from 'uuid';
 
+import { getSuccessfulHits } from '@/services/queries/success/getSuccessfulHits';
 import { GameMode } from '@/types/game';
 import { BallFeedRate, Spin } from '@/types/settings';
 
@@ -34,6 +35,7 @@ type GameHistory = {
   date: number;
   length: number;
   mode: GameMode;
+  successfulHits?: number;
   contents: GameContentHistory[];
 };
 
@@ -148,19 +150,22 @@ export const GameContextProvider: React.FC<{
 
     const gameLength = currentDateTime - gameStatus.startedAt;
 
-    setGameHistory((prevHistory) => [
-      ...(prevHistory || []),
-      {
-        id: uuidv4(),
-        date: currentDateTime,
-        length: gameLength,
-        mode: gameStatus.mode,
-        contents: gameContentReduced,
-      },
-    ]);
+    getSuccessfulHits().then((data) => {
+      setGameHistory((prevHistory) => [
+        ...(prevHistory || []),
+        {
+          id: uuidv4(),
+          date: currentDateTime,
+          length: gameLength,
+          mode: gameStatus.mode,
+          successfulHits: data?.successfulHits,
+          contents: gameContentReduced,
+        },
+      ]);
 
-    setGameStatus(null);
-    setGameContentArray([]);
+      setGameStatus(null);
+      setGameContentArray([]);
+    });
   };
 
   const handleGameReset = () => {
