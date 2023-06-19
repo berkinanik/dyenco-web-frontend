@@ -20,6 +20,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { format, millisecondsToSeconds } from 'date-fns';
+import { map, orderBy } from 'lodash';
 
 import { useGameContext } from '@/contexts/GameContext';
 
@@ -57,7 +58,7 @@ export const GameHistoryPage = () => {
                 </Td>
               </Tr>
             ) : (
-              gameHistory.map((history) => (
+              map(orderBy(gameHistory, ['date'], ['desc']), (history) => (
                 <Fragment key={history.id}>
                   <Tr>
                     <Td textAlign="center">{history.id}</Td>
@@ -111,7 +112,7 @@ export const GameHistoryPage = () => {
                               </Tr>
                             </Thead>
                             <Tbody>
-                              {history.contents.map((content, index) => (
+                              {map(history.contents, (content, index) => (
                                 <Tr key={index}>
                                   <Td textAlign="center">{content.id}</Td>
                                   <Td textAlign="center">
