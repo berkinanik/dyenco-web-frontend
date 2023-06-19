@@ -43,7 +43,7 @@ export const GameHistoryPage = () => {
         <Table variant="simple" textAlign="center">
           <Thead>
             <Tr>
-              <Th textAlign="center">id</Th>
+              <Th textAlign="center">#</Th>
               <Th textAlign="center">Date</Th>
               <Th textAlign="center">Length</Th>
               <Th textAlign="center">Mode</Th>
@@ -51,91 +51,96 @@ export const GameHistoryPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {gameHistory.length === 0 ? (
+            {typeof gameHistory === 'undefined' || gameHistory.length === 0 ? (
               <Tr>
                 <Td colSpan={5} textAlign="center">
                   No game history available.
                 </Td>
               </Tr>
             ) : (
-              map(orderBy(gameHistory, ['date'], ['desc']), (history) => (
-                <Fragment key={history.id}>
-                  <Tr>
-                    <Td textAlign="center">{history.id}</Td>
-                    <Td textAlign="center">
-                      {format(history.date, 'dd.MM.yyyy HH:mm')}
-                    </Td>
-                    <Td textAlign="center">
-                      {millisecondsToSeconds(history.length)} seconds
-                    </Td>
-                    <Td textAlign="center">{history.mode}</Td>
-                    <Td textAlign="center">
-                      <IconButton
-                        aria-label="Expand"
-                        variant="outline"
-                        size="sm"
-                        icon={
-                          expandedId === history.id ? (
-                            <ChevronUpIcon />
-                          ) : (
-                            <ChevronDownIcon />
-                          )
-                        }
-                        onClick={() => handleToggleExpand(history.id)}
-                      />
-                      <IconButton
-                        aria-label="Delete"
-                        variant="outline"
-                        size="sm"
-                        icon={<DeleteIcon />}
-                        onClick={() => {
-                          setGameIdToDelete(history.id);
-                          onOpen();
-                        }}
-                        ml={2}
-                      />
-                    </Td>
-                  </Tr>
+              map(
+                orderBy(gameHistory, ['date'], ['desc']),
+                (history, index) => (
+                  <Fragment key={history.id}>
+                    <Tr>
+                      <Td textAlign="center">
+                        Game #{gameHistory.length - index}
+                      </Td>
+                      <Td textAlign="center">
+                        {format(history.date, 'dd.MM.yyyy HH:mm')}
+                      </Td>
+                      <Td textAlign="center">
+                        {millisecondsToSeconds(history.length)} seconds
+                      </Td>
+                      <Td textAlign="center">{history.mode}</Td>
+                      <Td textAlign="center">
+                        <IconButton
+                          aria-label="Expand"
+                          variant="outline"
+                          size="sm"
+                          icon={
+                            expandedId === history.id ? (
+                              <ChevronUpIcon />
+                            ) : (
+                              <ChevronDownIcon />
+                            )
+                          }
+                          onClick={() => handleToggleExpand(history.id)}
+                        />
+                        <IconButton
+                          aria-label="Delete"
+                          variant="outline"
+                          size="sm"
+                          icon={<DeleteIcon />}
+                          onClick={() => {
+                            setGameIdToDelete(history.id);
+                            onOpen();
+                          }}
+                          ml={2}
+                        />
+                      </Td>
+                    </Tr>
 
-                  <tr>
-                    <td colSpan={5}>
-                      <Collapse in={expandedId === history.id} animateOpacity>
-                        <Box py={4} px={10}>
-                          <Table variant="striped">
-                            <Thead>
-                              <Tr>
-                                <Th textAlign="center">#</Th>
-                                <Th textAlign="center">Target Area</Th>
-                                <Th textAlign="center">Spin</Th>
-                                <Th textAlign="center">Ball Feed Rate</Th>
-                                <Th textAlign="center">Length</Th>
-                              </Tr>
-                            </Thead>
-                            <Tbody>
-                              {map(history.contents, (content, index) => (
-                                <Tr key={index}>
-                                  <Td textAlign="center">{content.id}</Td>
-                                  <Td textAlign="center">
-                                    {content.targetArea}
-                                  </Td>
-                                  <Td textAlign="center">{content.spin}</Td>
-                                  <Td textAlign="center">
-                                    {content.ballFeedRate}
-                                  </Td>
-                                  <Td textAlign="center">
-                                    {millisecondsToSeconds(content.length)}{' '}
-                                    seconds
-                                  </Td>
+                    <tr>
+                      <td colSpan={5}>
+                        <Collapse in={expandedId === history.id} animateOpacity>
+                          <Box py={4} px={10}>
+                            <Table variant="striped">
+                              <Thead>
+                                <Tr>
+                                  <Th textAlign="center">#</Th>
+                                  <Th textAlign="center">Target Area</Th>
+                                  <Th textAlign="center">Spin</Th>
+                                  <Th textAlign="center">Ball Feed Rate</Th>
+                                  <Th textAlign="center">Length</Th>
                                 </Tr>
-                              ))}
-                            </Tbody>
-                          </Table>
-                        </Box>
-                      </Collapse>
-                    </td>
-                  </tr>
-                </Fragment>
-              ))
+                              </Thead>
+                              <Tbody>
+                                {map(history.contents, (content, index) => (
+                                  <Tr key={index}>
+                                    <Td textAlign="center">{content.id}</Td>
+                                    <Td textAlign="center">
+                                      {content.targetArea}
+                                    </Td>
+                                    <Td textAlign="center">{content.spin}</Td>
+                                    <Td textAlign="center">
+                                      {content.ballFeedRate}
+                                    </Td>
+                                    <Td textAlign="center">
+                                      {millisecondsToSeconds(content.length)}{' '}
+                                      seconds
+                                    </Td>
+                                  </Tr>
+                                ))}
+                              </Tbody>
+                            </Table>
+                          </Box>
+                        </Collapse>
+                      </td>
+                    </tr>
+                  </Fragment>
+                ),
+              )
             )}
           </Tbody>
         </Table>

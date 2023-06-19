@@ -1,15 +1,8 @@
 import { createContext, useContext, useState } from 'react';
 
-import {
-  filter,
-  isEmpty,
-  isEqual,
-  omit,
-  reduce,
-  slice,
-  uniqueId,
-} from 'lodash';
+import { filter, isEmpty, isEqual, omit, reduce, slice } from 'lodash';
 import useLocalStorage from 'use-local-storage';
+import { v4 as uuidv4 } from 'uuid';
 
 import { GameMode } from '@/types/game';
 import { BallFeedRate, Spin } from '@/types/settings';
@@ -49,7 +42,7 @@ type GameContextType = {
   startOrUpdateGame: (mode: GameMode, content: GameContentBase) => void;
   endGame: () => void;
   resetGame: () => void;
-  gameHistory: GameHistory[];
+  gameHistory: GameHistory[] | undefined;
   removeGameHistory: (id: string) => void;
 };
 
@@ -159,7 +152,7 @@ export const GameContextProvider: React.FC<{
     setGameHistory((prevHistory) => [
       ...(prevHistory || []),
       {
-        id: uniqueId('game_'),
+        id: uuidv4(),
         date: currentDateTime,
         length: gameLength,
         mode: gameStatus.mode,
