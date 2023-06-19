@@ -77,7 +77,7 @@ export const GameControl: React.FC<Props> = ({
     setValue('spin', Object.values(Spin)[Math.floor(Math.random() * 3)]);
     setValue(
       'ballFeedRate',
-      Object.values(BallFeedRate)[Math.floor(Math.random() * 3)],
+      Object.values(BallFeedRate)[Math.floor(Math.random() * 2) + 1],
     );
   }, [setValue]);
 
