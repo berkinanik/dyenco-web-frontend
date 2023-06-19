@@ -103,6 +103,7 @@ export const GameHistoryPage = () => {
                           <Table variant="striped">
                             <Thead>
                               <Tr>
+                                <Th textAlign="center">#</Th>
                                 <Th textAlign="center">Target Area</Th>
                                 <Th textAlign="center">Spin</Th>
                                 <Th textAlign="center">Ball Feed Rate</Th>
@@ -112,6 +113,7 @@ export const GameHistoryPage = () => {
                             <Tbody>
                               {history.contents.map((content, index) => (
                                 <Tr key={index}>
+                                  <Td textAlign="center">{content.id}</Td>
                                   <Td textAlign="center">
                                     {content.targetArea}
                                   </Td>

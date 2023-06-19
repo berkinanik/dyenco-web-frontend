@@ -1,6 +1,14 @@
 import { createContext, useContext, useState } from 'react';
 
-import { filter, isEmpty, isEqual, reduce, slice, uniqueId } from 'lodash';
+import {
+  filter,
+  isEmpty,
+  isEqual,
+  omit,
+  reduce,
+  slice,
+  uniqueId,
+} from 'lodash';
 import useLocalStorage from 'use-local-storage';
 
 import { GameMode } from '@/types/game';
@@ -18,11 +26,13 @@ type GameContentBase = {
 };
 
 type GameContent = {
+  id: number;
   startedAt: number;
   endedAt: number;
 } & GameContentBase;
 
 type GameContentHistory = {
+  id: number;
   length: number;
 } & GameContentBase;
 
@@ -36,8 +46,9 @@ type GameHistory = {
 
 type GameContextType = {
   gameStatus: GameStatus | null;
-  startOrUpdateGame: (mode: GameMode, content: GameContent) => void;
+  startOrUpdateGame: (mode: GameMode, content: GameContentBase) => void;
   endGame: () => void;
+  resetGame: () => void;
   gameHistory: GameHistory[];
   removeGameHistory: (id: string) => void;
 };
@@ -48,6 +59,8 @@ const GameContext = createContext<GameContextType>({
   startOrUpdateGame: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   endGame: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  resetGame: () => {},
   gameHistory: [],
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   removeGameHistory: () => {},
@@ -66,7 +79,10 @@ export const GameContextProvider: React.FC<{
     [],
   );
 
-  const handleGameStartOrUpdate = (mode: GameMode, content: GameContent) => {
+  const handleGameStartOrUpdate = (
+    mode: GameMode,
+    content: GameContentBase,
+  ) => {
     const currentDateTime = Date.now();
 
     setGameStatus((prevStatus) => {
@@ -79,19 +95,29 @@ export const GameContextProvider: React.FC<{
 
     setGameContentArray((prevArray) => {
       if (isEmpty(prevArray)) {
-        return [{ ...content, startedAt: currentDateTime, endedAt: 0 }];
+        return [{ ...content, startedAt: currentDateTime, endedAt: 0, id: 1 }];
       }
 
       const lastContent = prevArray[prevArray.length - 1];
 
-      if (isEqual(lastContent, content)) {
+      if (
+        isEqual(
+          omit(lastContent, ['id', 'endedAt', 'startedAt']),
+          omit(content, ['id', 'endedAt', 'startedAt']),
+        )
+      ) {
         return prevArray;
       }
 
       return [
         ...slice(prevArray, 0, -1),
         { ...lastContent, endedAt: currentDateTime },
-        { ...content, startedAt: currentDateTime, endedAt: 0 },
+        {
+          ...content,
+          startedAt: currentDateTime,
+          endedAt: 0,
+          id: lastContent.id + 1,
+        },
       ];
     });
   };
@@ -128,7 +154,7 @@ export const GameContextProvider: React.FC<{
       [] as GameContentHistory[],
     );
 
-    const gameLength = gameStatus.startedAt - currentDateTime;
+    const gameLength = currentDateTime - gameStatus.startedAt;
 
     setGameHistory((prevHistory) => [
       ...(prevHistory || []),
@@ -141,6 +167,11 @@ export const GameContextProvider: React.FC<{
       },
     ]);
 
+    setGameStatus(null);
+    setGameContentArray([]);
+  };
+
+  const handleGameReset = () => {
     setGameStatus(null);
     setGameContentArray([]);
   };
@@ -161,6 +192,7 @@ export const GameContextProvider: React.FC<{
         gameStatus,
         startOrUpdateGame: handleGameStartOrUpdate,
         endGame: handleGameEnd,
+        resetGame: handleGameReset,
         gameHistory,
         removeGameHistory: handleRemoveGameHistory,
       }}

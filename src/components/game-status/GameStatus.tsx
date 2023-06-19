@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 import { differenceInSeconds } from 'date-fns';
 
@@ -6,6 +8,17 @@ import { useBorderColor } from '@/hooks/useBorderColor';
 
 export const GameStatus = () => {
   const { gameStatus } = useGameContext();
+  const [timeElapsed, setTimeElapsed] = useState(0);
+
+  useEffect(() => {
+    if (gameStatus) {
+      const interval = setInterval(() => {
+        setTimeElapsed(differenceInSeconds(new Date(), gameStatus.startedAt));
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  });
 
   return (
     <Box
@@ -34,9 +47,7 @@ export const GameStatus = () => {
 
           <Flex alignItems="center" mt={2}>
             <Text fontWeight="bold">Training:</Text>
-            <Text ml={2}>
-              {differenceInSeconds(new Date(), gameStatus.startedAt)} s
-            </Text>
+            <Text ml={2}>{timeElapsed} s</Text>
           </Flex>
         </>
       ) : (

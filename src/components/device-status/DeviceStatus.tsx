@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Box,
   Button,
@@ -12,6 +14,7 @@ import { AiOutlineWifi } from 'react-icons/ai';
 import { useQueryClient } from 'react-query';
 
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
+import { useGameContext } from '@/contexts/GameContext';
 import { useBorderColor } from '@/hooks/useBorderColor';
 import { useStopGameMutation } from '@/services/mutations/device/useStopMutation';
 import { useGetCurrentSettings } from '@/services/queries/device/useGetCurrentSettings';
@@ -19,6 +22,9 @@ import { Query } from '@/services/queries/types';
 import { OperationMode } from '@/types/settings';
 
 export const DeviceStatus: React.FC = () => {
+  const [previousOperationMode, setPreviousOperationMode] =
+    useState<OperationMode>(OperationMode.IDLE);
+
   const {
     status: {
       deviceConnected,
@@ -31,6 +37,8 @@ export const DeviceStatus: React.FC = () => {
     },
     changeStatus,
   } = useDeviceStatusContext();
+  const { endGame } = useGameContext();
+
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -47,7 +55,18 @@ export const DeviceStatus: React.FC = () => {
         isClosable: true,
       });
     },
-    onSuccess: (result) => changeStatus({ deviceConnected: true, ...result }),
+    onSuccess: (result) => {
+      changeStatus({ deviceConnected: true, ...result });
+
+      if (
+        result.operationMode === OperationMode.IDLE &&
+        previousOperationMode !== OperationMode.IDLE
+      ) {
+        endGame();
+      }
+
+      setPreviousOperationMode(result.operationMode);
+    },
   });
 
   const { mutate, isLoading } = useStopGameMutation({
@@ -141,7 +160,10 @@ export const DeviceStatus: React.FC = () => {
       <Flex placeContent="center" mt={2}>
         <Button
           colorScheme="red"
-          onClick={() => mutate()}
+          onClick={() => {
+            mutate();
+            endGame();
+          }}
           isLoading={isLoading}
           isDisabled={!deviceConnected || operationMode === OperationMode.IDLE}
         >

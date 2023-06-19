@@ -18,7 +18,9 @@ import { FormBox } from '@/components/form-box/FormBox';
 import { RadioGroup } from '@/components/forms/radio-button/RadioGroup';
 import { TennisTable } from '@/components/tennis-table/TennisTable';
 import { useDeviceStatusContext } from '@/contexts/DeviceStatusContext';
+import { useGameContext } from '@/contexts/GameContext';
 import { useStartBasicMutation } from '@/services/mutations/device/useStartBasicMutation';
+import { GameMode } from '@/types/game';
 import { BallFeedRate, OperationMode, Spin } from '@/types/settings';
 
 const schema = z.object({
@@ -39,6 +41,7 @@ export const BasicControlPage: React.FC = () => {
   const {
     status: { deviceConnected, operationMode },
   } = useDeviceStatusContext();
+  const { startOrUpdateGame, resetGame } = useGameContext();
 
   const { handleSubmit, control, watch, setValue } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -47,9 +50,17 @@ export const BasicControlPage: React.FC = () => {
 
   const selectedArea = watch('targetArea');
 
-  const { mutate, isLoading } = useStartBasicMutation();
+  const { mutate, isLoading } = useStartBasicMutation({
+    onError: () => {
+      resetGame();
+    },
+  });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => mutate(data);
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    mutate(data);
+
+    startOrUpdateGame(GameMode.BASIC, data);
+  };
 
   return (
     <Grid
