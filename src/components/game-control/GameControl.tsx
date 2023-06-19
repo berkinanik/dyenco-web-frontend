@@ -76,8 +76,6 @@ export const GameControl: React.FC<Props> = ({
   useEffect(() => {
     if (random && randomModeStarted) {
       const randomInterval = setInterval(() => {
-        console.log('setting random values');
-
         setRandomValues();
 
         handleSubmit(onSubmit)();

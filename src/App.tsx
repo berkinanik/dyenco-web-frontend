@@ -13,7 +13,6 @@ export const App: React.FC = () => {
     defaultOptions: {
       mutations: {
         onError: (error) => {
-          // eslint-disable-next-line no-console
           console.error('mutation error', error);
         },
         onMutate: (variables) => {
