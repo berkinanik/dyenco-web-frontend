@@ -133,7 +133,7 @@ export const GameControl: React.FC<Props> = ({
                     const options = [
                       {
                         label: (
-                          <HStack>
+                          <HStack flexWrap="wrap" justify="center">
                             <Text>Topspin</Text>
                             <Icon as={AiOutlineRedo} />
                           </HStack>
@@ -146,7 +146,7 @@ export const GameControl: React.FC<Props> = ({
                       },
                       {
                         label: (
-                          <HStack>
+                          <HStack flexWrap="wrap" justify="center">
                             <Text>Backspin</Text>
                             <Icon as={AiOutlineUndo} />
                           </HStack>
@@ -180,7 +180,7 @@ export const GameControl: React.FC<Props> = ({
                     const options = [
                       {
                         label: (
-                          <HStack spacing={0}>
+                          <HStack spacing={0} flexWrap="wrap" justify="center">
                             <Text>Slow</Text>
                             <Icon as={AiOutlineRight} ml={1} />
                           </HStack>
@@ -189,7 +189,7 @@ export const GameControl: React.FC<Props> = ({
                       },
                       {
                         label: (
-                          <HStack spacing={0}>
+                          <HStack spacing={0} flexWrap="wrap" justify="center">
                             <Text>Medium</Text>
                             <Icon as={AiOutlineRight} ml={1} />
                             <Icon as={AiOutlineRight} ml={-1.5} />
@@ -199,7 +199,7 @@ export const GameControl: React.FC<Props> = ({
                       },
                       {
                         label: (
-                          <HStack spacing={0}>
+                          <HStack spacing={0} flexWrap="wrap" justify="center">
                             <Text>High</Text>
                             <Icon as={AiOutlineRight} ml={1} />
                             <Icon as={AiOutlineRight} ml={-1.5} />

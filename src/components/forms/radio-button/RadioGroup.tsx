@@ -6,7 +6,8 @@ type Props = {
   options: { label: React.ReactNode; value: string | number }[];
   name: string;
   value: string | number;
-  onChange: (value: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onChange: (value: any) => void;
   equalWidth?: boolean;
   disabled?: boolean;
 };

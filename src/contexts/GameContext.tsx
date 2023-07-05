@@ -4,7 +4,7 @@ import { filter, isEmpty, isEqual, omit, reduce, slice } from 'lodash';
 import useLocalStorage from 'use-local-storage';
 import { v4 as uuidv4 } from 'uuid';
 
-import { getSuccessfulHits } from '@/services/queries/success/getSuccessfulHits';
+// import { getSuccessfulHits } from '@/services/queries/success/getSuccessfulHits';
 import { GameMode } from '@/types/game';
 import { BallFeedRate, Spin } from '@/types/settings';
 

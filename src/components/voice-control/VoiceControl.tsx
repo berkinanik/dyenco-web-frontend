@@ -2,8 +2,24 @@ import { useState } from 'react';
 
 import { Button } from '@chakra-ui/button';
 import { Icon } from '@chakra-ui/icon';
+import { QuestionOutlineIcon } from '@chakra-ui/icons';
 import { Divider, HStack, Text, VStack } from '@chakra-ui/layout';
+import {
+  Box,
+  IconButton,
+  ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  UnorderedList,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/toast';
+import { map } from 'lodash';
 import { useFormContext } from 'react-hook-form';
 import { FaMicrophone } from 'react-icons/fa';
 import SpeechRecognition, {
@@ -22,6 +38,7 @@ type Props = { handleSubmit: () => void };
 
 export const VoiceControl: React.FC<Props> = ({ handleSubmit }) => {
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [voiceOn, setVoiceOn] = useState(false);
 
@@ -199,47 +216,88 @@ export const VoiceControl: React.FC<Props> = ({ handleSubmit }) => {
   };
 
   return (
-    <VStack
-      spacing={4}
-      p={4}
-      borderWidth={1}
-      borderRadius="md"
-      borderColor={useBorderColor()}
-      borderStyle="solid"
-      alignItems="center"
-    >
-      {SpeechRecognition.browserSupportsSpeechRecognition() ? (
-        <>
-          <HStack align="center">
-            <Text fontSize="xl" fontWeight="bold">
-              Voice Control
-            </Text>
-            <Icon as={FaMicrophone} fontSize="lg" />
-          </HStack>
-
-          <Divider />
-
-          <HStack spacing={4}>
-            <Button
-              colorScheme="red"
-              onClick={stopListening}
-              isDisabled={!voiceOn}
+    <>
+      <VStack
+        spacing={4}
+        p={4}
+        borderWidth={1}
+        borderRadius="md"
+        borderColor={useBorderColor()}
+        borderStyle="solid"
+        alignItems="center"
+      >
+        {SpeechRecognition.browserSupportsSpeechRecognition() ? (
+          <>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              flexDirection="row"
+              width="100%"
             >
-              Stop
-            </Button>
+              <HStack align="center">
+                <Text fontSize="xl" fontWeight="bold">
+                  Voice Control
+                </Text>
+                <Icon as={FaMicrophone} fontSize="lg" />
+              </HStack>
 
-            <Button
-              colorScheme="green"
-              onClick={listen}
-              isDisabled={voiceOn || !deviceConnected}
-            >
-              Start
+              <IconButton
+                size="sm"
+                onClick={onOpen}
+                aria-label="Help"
+                icon={<QuestionOutlineIcon />}
+              />
+            </Box>
+
+            <Divider />
+
+            <HStack spacing={4}>
+              <Button
+                colorScheme="red"
+                onClick={stopListening}
+                isDisabled={!voiceOn}
+              >
+                Stop
+              </Button>
+
+              <Button
+                colorScheme="green"
+                onClick={listen}
+                isDisabled={voiceOn || !deviceConnected}
+              >
+                Start
+              </Button>
+            </HStack>
+          </>
+        ) : (
+          <Text>Sorry, your browser does not support speech recognition.</Text>
+        )}
+      </VStack>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Available Commands</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>The following commands are available.</Text>
+            <UnorderedList>
+              {map(commands, (command) => (
+                <ListItem key={command.command.toString()}>
+                  {command.command.toString()}
+                </ListItem>
+              ))}
+            </UnorderedList>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="gray" onClick={onClose}>
+              Close
             </Button>
-          </HStack>
-        </>
-      ) : (
-        <Text>Sorry, your browser does not support speech recognition.</Text>
-      )}
-    </VStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
