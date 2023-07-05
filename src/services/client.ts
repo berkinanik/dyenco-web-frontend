@@ -1,22 +1,24 @@
-import axiosBase from 'axios';
+export { client, successClient } from './mock';
 
-const BASE_URL = 'http://localhost:8000/api';
+// import axiosBase from 'axios';
+
+// const BASE_URL = 'http://localhost:8000/api';
 // check production url with prod base url for redirecting
 // const PROD_BASE_URL = 'https://dyencohttp-berkinani.pitunnel.com/api';
 // const PROD_URL = 'https://dyencohttp-berkinani.eu1.pitunnel.com/api';
 
-export const client = axiosBase.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// export const client = axiosBase.create({
+//   baseURL: BASE_URL,
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
 
-const SUCCESS_BASE_URL = 'http://localhost:8001/api';
+// const SUCCESS_BASE_URL = 'http://localhost:8001/api';
 
-export const successClient = axiosBase.create({
-  baseURL: SUCCESS_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// export const successClient = axiosBase.create({
+//   baseURL: SUCCESS_BASE_URL,
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
