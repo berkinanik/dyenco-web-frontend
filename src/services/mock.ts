@@ -38,15 +38,15 @@ class APIMockInstance {
 }
 
 class SuccessAPIMockInstance {
-  get(_url: string) {
-    return new Promise<{ data: SuccessfulHitsResponse }>((resolve) => {
+  get<T = SuccessfulHitsResponse>(_url: string) {
+    return new Promise<{ data: T }>((resolve) => {
       setTimeout(() => {
         resolve({
           data: {
             successfulHits: 20,
             message: 'Operation successful',
             status: 'success',
-          },
+          } as T,
         });
       }, 1000);
     });
