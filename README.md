@@ -14,9 +14,9 @@ The project utilizes React with Chakra UI components to create a visually appeal
 
 With the help of the `react-speech-recognition` library, users can control the DYENCO Training Buddy using voice commands.
 
-#### Real-time Data:
+#### Device Status Info:
 
-The application provides real-time data feedback on various parameters, including voltage levels on stepper motor, servo motors, and DC motors via polling the backend running on the raspberry.
+The application provides data on various parameters of the device, including voltage levels on stepper motor, servo motors, and DC motors via polling the backend running on the raspberry.
 
 #### Target Selection:
 
