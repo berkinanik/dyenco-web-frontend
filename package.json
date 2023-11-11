@@ -15,7 +15,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.1.1",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.12.18",
     "lodash": "^4.17.21",
